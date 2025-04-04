@@ -1,5 +1,12 @@
 <script setup>
-
+import axios from 'axios';
+import { ref } from 'vue';
+const ListData=ref([])  
+CallCountryListData()
+async function CallCountryListData(){
+  let res=await axios.get('https://countrylist.teamrabbil.com/api/country-list')
+  ListData.value=res.data
+}
 </script>
 <template>
   <!-- table start -->
@@ -8,36 +15,20 @@
     <table class="min-w-full border border-gray-200 rounded-lg overflow-hidden shadow-md">
       <thead class="bg-gray-100">
         <tr>
-          <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">Picture</th>
-          <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">Name</th>
-          <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">Email</th>
-          <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">Address</th>
+          <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">Flag</th>
+          <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">Country Name</th>
+          <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">Capital</th>
+          <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">Description</th>
         </tr>
       </thead>
       <tbody class="bg-white divide-y divide-gray-200">
-        <tr>
+        <tr v-for="(item) in ListData">
           <td class="px-6 py-4">
-            <img src="https://via.placeholder.com/50" alt="Person 1" class="w-12 h-12 rounded-full">
+            <img :src="item['flag']" alt="flag" class="w-12 h-12 rounded-full">
           </td>
-          <td class="px-6 py-4 text-sm text-gray-800">Md. Saqline Zaman</td>
-          <td class="px-6 py-4 text-sm text-gray-600">saqline@example.com</td>
-          <td class="px-6 py-4 text-sm text-gray-600">Dhaka, Bangladesh</td>
-        </tr>
-        <tr>
-          <td class="px-6 py-4">
-            <img src="https://via.placeholder.com/50" alt="Person 2" class="w-12 h-12 rounded-full">
-          </td>
-          <td class="px-6 py-4 text-sm text-gray-800">Ayman Hossain</td>
-          <td class="px-6 py-4 text-sm text-gray-600">ayman@example.com</td>
-          <td class="px-6 py-4 text-sm text-gray-600">Chittagong, BD</td>
-        </tr>
-        <tr>
-          <td class="px-6 py-4">
-            <img src="https://via.placeholder.com/50" alt="Person 3" class="w-12 h-12 rounded-full">
-          </td>
-          <td class="px-6 py-4 text-sm text-gray-800">Nusrat Jahan</td>
-          <td class="px-6 py-4 text-sm text-gray-600">nusrat@example.com</td>
-          <td class="px-6 py-4 text-sm text-gray-600">Sylhet, BD</td>
+          <td class="px-6 py-4 text-sm text-gray-800">{{ item['name'] }}</td>
+          <td class="px-6 py-4 text-sm text-gray-600">{{ item['capital'] }}</td>
+          <td class="px-6 py-4 text-sm text-gray-600">{{ item['short_description'] }}</td>
         </tr>
       </tbody>
     </table>
